@@ -28,8 +28,39 @@ export default function MyBookingsPage() {
     setCancelTarget(null);
   };
 
+  const exportToCSV = () => {
+    if (bookings.length === 0) {
+      showToast('No bookings to export.');
+      return;
+    }
+    const headers = ['Room', 'Date', 'Start', 'End', 'Purpose'];
+    const rows = bookings.map((b: any) => [
+      `"${b.roomName || ''}"`,
+      `"${b.date || ''}"`,
+      `"${b.startTime || ''}"`,
+      `"${b.endTime || ''}"`,
+      `"${b.purpose || ''}"`
+    ]);
+    const csvContent = [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "my_bookings.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="page active" id="page-mybookings">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+        <button onClick={exportToCSV} className="btn-crystal-main" style={{ padding: '8px 16px', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span>📥</span> EXPORT CSV
+        </button>
+      </div>
+
       <div className="bk-list" id="my-booking-list">
         {bookings.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '48px', color: 'var(--text-muted)', fontFamily: "'Orbitron',sans-serif", fontSize: '.75rem', letterSpacing: '.15em' }}>NO BOOKINGS YET</div>
