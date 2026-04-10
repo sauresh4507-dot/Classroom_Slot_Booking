@@ -15,6 +15,7 @@ export default function Navigation() {
         <Link href="/book" className={`nav-tab ${pathname === '/book' ? 'active' : ''}`}>Book</Link>
         <Link href="/schedule" className={`nav-tab ${pathname === '/schedule' ? 'active' : ''}`}>Schedule</Link>
         <Link href="/mybookings" className={`nav-tab ${pathname === '/mybookings' ? 'active' : ''}`}>My Bookings</Link>
+        <Link href="/upcoming" className={`nav-tab ${pathname === '/upcoming' ? 'active' : ''}`}>Upcoming</Link>
       </div>
     </nav>
   );
