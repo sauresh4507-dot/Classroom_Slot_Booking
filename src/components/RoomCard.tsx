@@ -11,12 +11,12 @@ export default function RoomCard({ room }: { room: any }) {
   const statusText = status === 'free' ? '● AVAILABLE' : '● OCCUPIED';
 
   return (
-    <div className="room-card crystal" data-type={room.type} onClick={() => router.push(`/book?roomId=${room.id}`)}>
+    <div className="room-card crystal" data-type={room.type} title={room.name} onClick={() => router.push(`/book?roomId=${room.id}`)}>
       <div className="crystal-inner">
         <div className="room-tag">{room.type}</div>
         <div className="room-name">{room.name}</div>
         <div className="room-meta">
-          Bldg: {room.building}<br/>
+          Bldg: {room.building}{room.floor != null ? ` · Floor ${room.floor}` : ""}<br/>
           Cap: {room.capacity} seats<br/>
           {room.amenities}
         </div>
