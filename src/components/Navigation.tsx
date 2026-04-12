@@ -9,6 +9,8 @@ export default function Navigation() {
   const [dark, setDark] = useState(false);
   const [time, setTime] = useState<string>("--");
 
+  const [date, setDate] = useState<string>("");
+
   // Persist theme across reloads
   useEffect(() => {
     const saved = localStorage.getItem("theme");
@@ -20,7 +22,11 @@ export default function Navigation() {
 
   // Live Clock interval
   useEffect(() => {
-    const updateTime = () => setTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    const updateTime = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      setDate(now.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' }));
+    };
     updateTime();
     const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
@@ -46,8 +52,9 @@ export default function Navigation() {
           <Link href="/upcoming" className={`nav-tab ${pathname === '/upcoming' ? 'active' : ''}`}>Upcoming</Link>
         </div>
       </div>
-      <div className="clock-widget" style={{ fontFamily: "'Orbitron',sans-serif", fontSize: '0.85rem', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(8,145,178,0.1)', padding: '6px 14px', borderRadius: '999px', border: '1px solid rgba(8,145,178,0.2)' }}>
-        <span style={{ fontSize: '0.9rem' }}>⏱</span> {time}
+      <div className="clock-widget" style={{ fontFamily: "'Orbitron',sans-serif", fontSize: '0.85rem', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(8,145,178,0.1)', padding: '6px 14px', borderRadius: '999px', border: '1px solid rgba(8,145,178,0.2)' }}>
+        <span style={{ fontSize: '0.9rem' }}>📅</span> {date}
+        <span style={{ fontSize: '0.9rem', marginLeft: '6px' }}>⏱</span> {time}
       </div>
       <button
         className="theme-toggle"
