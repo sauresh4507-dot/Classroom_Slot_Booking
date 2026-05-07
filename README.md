@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Classroom Slot Booking System
 
 A modern classroom reservation platform built with [Next.js](https://nextjs.org), Prisma, and a sleek glassmorphism UI.
@@ -30,3 +31,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 - Added floor number display in `RoomCard` component
 - Added hover tooltip (`title`) on room cards for accessibility
+=======
+# ITVC_practice_repo
+Classroom_Slot_Booking
+>>>>>>> 28f43c43a2f1f55095fd68ac5e2a31dc575ec6a2
