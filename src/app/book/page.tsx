@@ -7,14 +7,14 @@ import { useSearchParams } from "next/navigation";
 function BookContent() {
   const searchParams = useSearchParams();
   const preselectedRoom = searchParams.get('roomId');
-  
+
   const [rooms, setRooms] = useState([]);
   const [roomId, setRoomId] = useState(preselectedRoom || "");
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("08:00");
   const [endTime, setEndTime] = useState("09:00");
   const [purpose, setPurpose] = useState("");
-  
+
   const [bookings, setBookings] = useState([]);
   const [toast, setToast] = useState("");
 
@@ -34,12 +34,13 @@ function BookContent() {
 
   const submitBooking = async () => {
     if (!roomId || !date) { showToast('Please fill all required fields'); return; }
-    
+    if (endTime <= startTime) { showToast('End time must be after start time'); return; }
+
     // Optimistic checking
-    if (bookings.find((b: any) => b.roomId === parseInt(roomId) && b.date === date && b.startTime === startTime)) { 
-      showToast('Slot already booked!'); return; 
+    if (bookings.find((b: any) => b.roomId === parseInt(roomId) && b.date === date && b.startTime === startTime)) {
+      showToast('Slot already booked!'); return;
     }
-    
+
     const res = await fetch('/api/bookings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -79,7 +80,7 @@ function BookContent() {
             </div>
             <div className="form-group"><label>End Time</label>
               <select value={endTime} onChange={e => setEndTime(e.target.value)}>
-                {['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00'].map(h => <option key={h}>{h}</option>)}
+                {['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'].map(h => <option key={h}>{h}</option>)}
               </select>
             </div>
             <div className="form-group"><label>Purpose</label><input type="text" placeholder="e.g. CS101 Lecture" value={purpose} onChange={e => setPurpose(e.target.value)} /></div>
