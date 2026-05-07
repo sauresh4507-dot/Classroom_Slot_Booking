@@ -33,9 +33,19 @@ function BookContent() {
 
   const submitBooking = async () => {
     if (!roomId || !date) { showToast('Please fill all required fields'); return; }
+<<<<<<< HEAD:src/app/book/page.jsx
     if (bookings.find(b => b.roomId === parseInt(roomId) && b.date === date && b.startTime === startTime)) {
       showToast('Slot already booked!'); return;
     }
+=======
+    if (endTime <= startTime) { showToast('End time must be after start time'); return; }
+
+    // Optimistic checking
+    if (bookings.find((b: any) => b.roomId === parseInt(roomId) && b.date === date && b.startTime === startTime)) {
+      showToast('Slot already booked!'); return;
+    }
+
+>>>>>>> c67e07e37dc18490dbeddf77b10d93853aaaf6f6:src/app/book/page.tsx
     const res = await fetch('/api/bookings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -75,7 +85,7 @@ function BookContent() {
             </div>
             <div className="form-group"><label>End Time</label>
               <select value={endTime} onChange={e => setEndTime(e.target.value)}>
-                {['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00'].map(h => <option key={h}>{h}</option>)}
+                {['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'].map(h => <option key={h}>{h}</option>)}
               </select>
             </div>
             <div className="form-group"><label>Purpose</label><input type="text" placeholder="e.g. CS101 Lecture" value={purpose} onChange={e => setPurpose(e.target.value)} /></div>
