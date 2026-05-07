@@ -21,6 +21,12 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { roomId, date, startTime, endTime, purpose } = body;
 
+    // Guard: client-side validation can be bypassed via direct API calls;
+    // enforce time ordering at the server to prevent invalid bookings.
+    if (endTime <= startTime) {
+      return NextResponse.json({ success: false, error: 'End time must be after start time' }, { status: 400 });
+    }
+
     // Check for double bookings
     const conflict = await prisma.booking.findFirst({
       where: {
@@ -45,8 +51,8 @@ export async function POST(req: Request) {
       include: { room: true }
     });
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       data: {
         ...newBooking,
         roomName: newBooking.room.name
