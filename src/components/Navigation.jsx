@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 export default function Navigation() {
   const pathname = usePathname();
   const [dark, setDark] = useState(false);
-  const [time, setTime] = useState<string>("--");
+  const [time, setTime] = useState("--");
 
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState("");
 
   // Persist theme across reloads
   useEffect(() => {
