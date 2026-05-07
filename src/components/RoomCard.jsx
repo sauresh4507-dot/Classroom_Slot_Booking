@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-export default function RoomCard({ room }: { room: any }) {
+export default function RoomCard({ room }) {
   const router = useRouter();
   
   // Default to free if no status explicit

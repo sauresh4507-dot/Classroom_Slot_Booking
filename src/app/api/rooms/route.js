@@ -27,7 +27,7 @@ export async function GET() {
       rooms = await prisma.room.findMany();
     }
     return NextResponse.json({ success: true, count: rooms.length, data: rooms });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

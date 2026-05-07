@@ -1,18 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function GlassFilter() {
-  const feImageRef = useRef<SVGFEImageElement>(null);
+  const [imgUrl, setImgUrl] = useState(null);
 
   useEffect(() => {
     fetch("https://essykings.github.io/JavaScript/map.png")
       .then((response) => response.blob())
       .then((blob) => {
         const objURL = URL.createObjectURL(blob);
-        if (feImageRef.current) {
-          feImageRef.current.setAttribute("href", objURL);
-        }
+        setImgUrl(objURL);
       })
       .catch((err) => console.error("Failed to load map image for filter", err));
   }, []);
@@ -37,13 +35,12 @@ export default function GlassFilter() {
         primitiveUnits="objectBoundingBox"
       >
         <feImage
-          ref={feImageRef}
           x="-50%"
           y="-50%"
           width="200%"
           height="200%"
           result="map"
-          href="" /* fallback empty */
+          href={imgUrl}
         />
         <feGaussianBlur in="SourceGraphic" stdDeviation="0.02" result="blur" />
         <feDisplacementMap

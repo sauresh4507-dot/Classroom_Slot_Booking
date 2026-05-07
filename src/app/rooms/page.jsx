@@ -12,10 +12,10 @@ export default function RoomsPage() {
   }, []);
 
   const getFilteredRooms = () => {
-    if (filter === 'free') return rooms.map((r: any) => ({...r, status: 'free'}));
+    if (filter === 'free') return rooms.map(r => ({ ...r, status: 'free' }));
     if (filter === 'busy') return [];
-    if (filter !== 'all') return rooms.filter((r: any) => r.type === filter).map((r: any) => ({...r, status: 'free'}));
-    return rooms.map((r: any) => ({...r, status: 'free'}));
+    if (filter !== 'all') return rooms.filter(r => r.type === filter).map(r => ({ ...r, status: 'free' }));
+    return rooms.map(r => ({ ...r, status: 'free' }));
   };
 
   const filtered = getFilteredRooms();
@@ -37,7 +37,7 @@ export default function RoomsPage() {
       </div>
       <div className="rooms-scroll">
         <div className="rooms-grid">
-          {filtered.map((r: any) => <RoomCard key={r.id} room={r} />)}
+          {filtered.map(r => <RoomCard key={r.id} room={r} />)}
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
+export async function DELETE(req, props) {
   try {
     const params = await props.params;
     const id = parseInt(params.id, 10);
@@ -13,7 +13,7 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
     });
     
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

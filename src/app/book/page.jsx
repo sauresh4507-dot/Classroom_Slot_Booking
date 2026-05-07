@@ -3,18 +3,17 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-// Since we use useSearchParams, wrap in Suspense for Next.js app router strict modes
 function BookContent() {
   const searchParams = useSearchParams();
   const preselectedRoom = searchParams.get('roomId');
-  
+
   const [rooms, setRooms] = useState([]);
   const [roomId, setRoomId] = useState(preselectedRoom || "");
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("08:00");
   const [endTime, setEndTime] = useState("09:00");
   const [purpose, setPurpose] = useState("");
-  
+
   const [bookings, setBookings] = useState([]);
   const [toast, setToast] = useState("");
 
@@ -27,19 +26,16 @@ function BookContent() {
     setDate(new Date().toISOString().split('T')[0]);
   }, [preselectedRoom]);
 
-  const showToast = (msg: string) => {
+  const showToast = (msg) => {
     setToast(msg);
     setTimeout(() => setToast(""), 3200);
   };
 
   const submitBooking = async () => {
     if (!roomId || !date) { showToast('Please fill all required fields'); return; }
-    
-    // Optimistic checking
-    if (bookings.find((b: any) => b.roomId === parseInt(roomId) && b.date === date && b.startTime === startTime)) { 
-      showToast('Slot already booked!'); return; 
+    if (bookings.find(b => b.roomId === parseInt(roomId) && b.date === date && b.startTime === startTime)) {
+      showToast('Slot already booked!'); return;
     }
-    
     const res = await fetch('/api/bookings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -47,17 +43,17 @@ function BookContent() {
     });
     const d = await res.json();
     if (d.success) {
-      const rName = rooms.find((x: any) => x.id === parseInt(roomId))?.['name'] || 'Room';
+      const rName = rooms.find(x => x.id === parseInt(roomId))?.['name'] || 'Room';
       showToast(`Booked: ${rName} · ${startTime}–${endTime}`);
-      setBookings([...bookings, d.data] as any);
+      setBookings([...bookings, d.data]);
     } else {
       showToast(d.error || 'Failed to book slot');
     }
   };
 
-  const r: any = rooms.find((x: any) => x.id === parseInt(roomId));
+  const r = rooms.find(x => x.id === parseInt(roomId));
   const hrs = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
-  const rb = bookings.filter((b: any) => b.roomId === parseInt(roomId) && b.date === date);
+  const rb = bookings.filter(b => b.roomId === parseInt(roomId) && b.date === date);
 
   return (
     <div className="page active" id="page-book">
@@ -68,7 +64,7 @@ function BookContent() {
             <div className="form-group"><label>Room</label>
               <select value={roomId} onChange={e => setRoomId(e.target.value)}>
                 <option value="">— Select a room —</option>
-                {rooms.map((r: any) => <option key={r.id} value={r.id}>{r.name} ({r.type}, cap. {r.capacity})</option>)}
+                {rooms.map(r => <option key={r.id} value={r.id}>{r.name} ({r.type}, cap. {r.capacity})</option>)}
               </select>
             </div>
             <div className="form-group"><label>Date</label><input type="date" value={date} onChange={e => setDate(e.target.value)} /></div>
@@ -106,16 +102,14 @@ function BookContent() {
                     <h2>Availability</h2>
                     <div id="quick-slots" style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                       {hrs.map(h => {
-                        const busy = rb.some((b: any) => b.startTime === h);
+                        const busy = rb.some(b => b.startTime === h);
                         return (
                           <div key={h} style={{
                             padding: '4px 10px', borderRadius: '7px', fontSize: '.6rem', fontFamily: "'Orbitron',sans-serif",
                             background: busy ? 'rgba(124,58,237,0.08)' : 'rgba(8,145,178,0.07)',
                             border: `1px solid ${busy ? 'rgba(124,58,237,0.4)' : 'rgba(8,145,178,0.4)'}`,
                             color: busy ? 'var(--accent2)' : 'var(--accent)'
-                          }}>
-                            {h} {busy ? '●' : '○'}
-                          </div>
+                          }}>{h} {busy ? '●' : '○'}</div>
                         )
                       })}
                     </div>

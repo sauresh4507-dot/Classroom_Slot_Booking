@@ -1,18 +1,13 @@
-import type { Metadata } from "next";
 import Navigation from "@/components/Navigation";
 import GlassFilter from "@/components/GlassFilter";
 import "./globals.css";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "CLASX - Classroom Booking System",
   description: "Reserve your space with crystal-clear scheduling",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>

@@ -1,16 +1,17 @@
 "use client";
+
 import { useEffect, useState } from "react";
 
 export default function MyBookingsPage() {
   const [bookings, setBookings] = useState([]);
-  const [cancelTarget, setCancelTarget] = useState<number | null>(null);
+  const [cancelTarget, setCancelTarget] = useState(null);
   const [toast, setToast] = useState("");
 
   useEffect(() => {
     fetch('/api/bookings').then(r => r.json()).then(d => setBookings(d.data || []));
   }, []);
 
-  const showToast = (msg: string) => {
+  const showToast = (msg) => {
     setToast(msg);
     setTimeout(() => setToast(""), 3200);
   };
@@ -20,7 +21,7 @@ export default function MyBookingsPage() {
     const res = await fetch(`/api/bookings/${cancelTarget}`, { method: 'DELETE' });
     const d = await res.json();
     if (d.success) {
-      setBookings(bookings.filter((b: any) => b.id !== cancelTarget));
+      setBookings(bookings.filter(b => b.id !== cancelTarget));
       showToast('Booking cancelled.');
     } else {
       showToast('Failed to cancel booking.');
@@ -34,12 +35,10 @@ export default function MyBookingsPage() {
         {bookings.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '48px', color: 'var(--text-muted)', fontFamily: "'Orbitron',sans-serif", fontSize: '.75rem', letterSpacing: '.15em' }}>NO BOOKINGS YET</div>
         ) : (
-          bookings.map((b: any) => (
+          bookings.map(b => (
             <div key={b.id} className="bk-item crystal">
               <div className="crystal-inner" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 20px', borderRadius: 'inherit' }}>
-                <div className="bk-icon" style={{ width: '44px', height: '44px', borderRadius: '11px', flexShrink: 0, background: 'linear-gradient(135deg,rgba(8,145,178,0.15),rgba(124,58,237,0.1))', border: '1px solid rgba(8,145,178,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Orbitron',sans-serif", fontSize: '.65rem', fontWeight: 700, color: 'var(--accent)' }}>
-                  {b.roomName?.slice(0, 2) || 'RM'}
-                </div>
+                <div className="bk-icon" style={{ width: '44px', height: '44px', borderRadius: '11px', flexShrink: 0, background: 'linear-gradient(135deg,rgba(8,145,178,0.15),rgba(124,58,237,0.1))', border: '1px solid rgba(8,145,178,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Orbitron',sans-serif", fontSize: '.65rem', fontWeight: 700, color: 'var(--accent)' }}>{b.roomName?.slice(0, 2) || 'RM'}</div>
                 <div className="bk-info" style={{ flex: 1 }}>
                   <div className="bk-room" style={{ fontFamily: "'Orbitron',sans-serif", fontSize: '.85rem', fontWeight: 600, marginBottom: '3px', color: 'var(--text-dark)' }}>{b.roomName}</div>
                   <div className="bk-detail" style={{ fontSize: '.8rem', color: 'var(--text-mid)' }}>{b.date} · {b.startTime}–{b.endTime} · {b.purpose}</div>
@@ -65,7 +64,7 @@ export default function MyBookingsPage() {
           </div>
         </div>
       </div>
-      
+
       {toast && <div className="toast show">{toast}</div>}
     </div>
   );

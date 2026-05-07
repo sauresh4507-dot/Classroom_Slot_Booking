@@ -11,12 +11,12 @@ export async function GET() {
       roomName: b.room.name
     }));
     return NextResponse.json({ success: true, data: formatted });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req) {
   try {
     const body = await req.json();
     const { roomId, date, startTime, endTime, purpose } = body;
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
         roomName: newBooking.room.name
       }
     });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

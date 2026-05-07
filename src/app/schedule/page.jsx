@@ -29,7 +29,7 @@ export default function SchedulePage() {
           <input type="date" value={date} onChange={e => setDate(e.target.value)} style={{ padding: '8px 13px', background: 'rgba(255,255,255,0.55)', border: '1px solid rgba(255,255,255,0.8)', borderRadius: '10px', color: 'var(--text-dark)', fontFamily: "'Rajdhani',sans-serif", fontSize: '.9rem', outline: 'none', width: 'auto' }} />
           <label style={{ fontSize: '.65rem', letterSpacing: '.1em', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Room</label>
           <select value={roomId} onChange={e => setRoomId(e.target.value)} style={{ padding: '8px 13px', background: 'rgba(255,255,255,0.55)', border: '1px solid rgba(255,255,255,0.8)', borderRadius: '10px', color: 'var(--text-dark)', fontFamily: "'Rajdhani',sans-serif", fontSize: '.9rem', outline: 'none', minWidth: '130px' }}>
-            {rooms.map((r: any) => <option key={r.id} value={r.id}>{r.name}</option>)}
+            {rooms.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
           </select>
           <div className="btn-wrap" style={{ borderRadius: '999px' }}>
             <button className="btn-crystal-main" style={{ padding: '8px 20px', fontSize: '.6rem' }}>VIEW</button>
@@ -47,9 +47,9 @@ export default function SchedulePage() {
               <div key={h} className="sch-row">
                 <div className="sch-time">{h}</div>
                 {days.map((_, i) => {
-                  const ub = bookings.find((b: any) => b.roomId === parseInt(roomId) && b.startTime === h);
-                  const sb = samp.find((s: any) => s[0] === i && s[1] === h);
-                  if (ub) return <div key={i} className="sch-slot sch-booked">{(ub as any).purpose}</div>;
+                  const ub = bookings.find((b) => b.roomId === parseInt(roomId) && b.startTime === h);
+                  const sb = samp.find((s) => s[0] === i && s[1] === h);
+                  if (ub) return <div key={i} className="sch-slot sch-booked">{ub.purpose}</div>;
                   if (sb) return <div key={i} className="sch-slot sch-booked">{sb[2]}</div>;
                   return <div key={i} className="sch-slot sch-empty">FREE</div>;
                 })}
